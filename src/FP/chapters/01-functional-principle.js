@@ -17,6 +17,58 @@ const dummyDocument = {
 };
 
 
+/*
+
+function fetchAndRenderAndLogAlbumList() {
+  fetch("https://jsonplaceholder.typicode.com/album/1/photos?_start=0&_limit=4")
+    .then((response) => response.json())
+    .then((data) => {
+      dummyDocument.body.innerHTML = `
+        <ul class="albumList">
+          ${data
+            .map(
+              ({ albumId, id, title, url, thumbnailUrl }) =>
+                `
+                <li class="albumItem">
+                  <a class="albumLink" href="${url}">
+                    <img class="albumThumbnail" src="${thumbnailUrl}" alt="" />
+                    <div role="group" class="albumInfo">
+                      <strong class="albumTitle">${title}</strong>
+                      <span class="albumId">${albumId}</span>
+                    </div>
+                  </a>
+                </li>
+              `
+            )
+            .join("")}
+        </ul>
+      `;
+
+      console.log(dummyDocument.body.innerHTML);
+    })
+    .catch((error) => console.error(error.message));
+}
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // --------------------------------------------------------------------------
 // 함수는 하나 이상의 기능을 제공할 수 있습니다.
 // - 일반적으로 함수를 작성할 때 여러 일을 처리하도록 구성합니다.
@@ -39,9 +91,11 @@ function fetchAndRenderAndLogAlbumList() {
 // - 위 함수 로직을 단 하나의 기능에 집중하도록 분리 구성해봅니다.
 
 function fetchData(endpoint) {
-  // Promise
+  // Promise (endpoint -> 데이터 받아오는 url)
   return fetch(endpoint)
+    // url을 정상적으로 받아올 때
     .then((response) => response.json())
+    // url 링크가 이상해서 정상적으로 불러와지지 않으면
     .catch((error) => console.error(error.message));
 }
 
@@ -76,6 +130,7 @@ function log(container) {
 
 async function run() {
   // 데이터 패치(가져오기)
+  // 가져올때 비동기 처리(async, await)
   const responseData = await fetchData(
     'https://jsonplaceholder.typicode.com/album/1/photos?_start=0&_limit=4'
   );
