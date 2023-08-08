@@ -294,7 +294,61 @@ firstCountUp.mount(demoContainer);
 secondCountUp.mount(demoContainer);
 thirdCountUp.mount(demoContainer);
 
+
+
 // --------------------------------------------------------------------------
 // 웹 컴포넌트(Web Components) API
 // → 웹 컴포넌트를 사용해 구현합니다. (참고: https://mzl.la/3YjFdu9)
 
+class CounterButtonComponent extends HTMLElement {
+  #config = {
+    count: 0,
+    step: 1,
+  }
+
+  constructor() {
+    super();
+    this.#init();
+  }
+
+  #init() {
+    const userConfig = {
+      count: Number(this.getAttribute('count')),
+      step: Number(this.getAttribute('step')) || 1,
+    };
+
+    this.#config = { ...this.#config, ...userConfig };
+  }
+
+  #bindEvent(e) {
+    if (e.target.matches('button')) {
+      this.#setCount();
+      this.render();
+      // 참고: https://developer.mozilla.org/ko/docs/Web/Events/Creating_and_triggering_events
+      this.dispatchEvent(new CustomEvent('update', { detail: this.#config.count }));
+    }
+  }
+
+  #setCount() {
+    const { count, step } = this.#config;
+    this.#config.count = count + step;
+  }
+
+  connectedCallback() {
+    // console.log('connected');
+    this.render();
+    this.addEventListener('click', (e) => this.#bindEvent(e));
+  }
+
+  disconnectedCallback() {
+    // console.log('disconnected');
+    this.removeEventListener('click', (e) => this.#bindEvent(e));
+  }
+
+  render() {
+    const { count } = this.#config;
+    this.innerHTML = `<button type="button">${count}</button>`;
+  }
+}
+
+customElements.define('counter-button', CounterButtonComponent);
