@@ -5,10 +5,9 @@
 // 2. 미션(missions)
 // --------------------------------------------------------------------------
 
-
 // 웹 표준: 파일 확장자가 필요
 // Vite 환경: 파일 확장자 생략 가능 (.js, .jsx, .ts, .tsx, .json)
-// css는 확장자 무조건 붙여줘야한다.
+
 
 import './styles/main.css';
-import './FP/chapters/00-programming-paradigm';
+import './FP/chapters/01-functional-principle';

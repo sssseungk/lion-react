@@ -231,7 +231,9 @@ class CounterButtonComponent extends HTMLElement {
       this.#setCount();
       this.render();
       // 참고: https://developer.mozilla.org/ko/docs/Web/Events/Creating_and_triggering_events
-      this.dispatchEvent(new CustomEvent('update', { detail: this.#config.count }));
+      this.dispatchEvent(new CustomEvent('update', { detail: {
+        count: this.#config.count
+      } }));
     }
   }
 
@@ -261,6 +263,6 @@ customElements.define('counter-button', CounterButtonComponent);
 
 const counterButtonEl = document.querySelector('counter-button');
 
-counterButtonEl.addEventListener('update', (e) => {
-  document.querySelector('.web-component').textContent = String(e.detail);
+counterButtonEl.addEventListener('update', ({ detail: { count } }) => {
+  document.querySelector('.web-component').textContent = String(count);
 });
