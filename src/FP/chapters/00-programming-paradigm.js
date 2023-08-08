@@ -211,30 +211,64 @@ class CountUpButton {
   // static field
   static version = '0.0.1-alpha';
 
+  // 기본 Props
+  static defaultProps = {
+    count: 0,
+    step: 1,
+    max: 10
+  };
+
   // private field
   // must be declared
   #count;
+  #props = {};
+  #button = null;
 
   // 라이프 사이클 메서드
   // 생성(constructor) 시점
   constructor(props) {
     console.log('생성 시점')
+    // 클래스가 생성한 인스턴스의 상태
     this.#count = props.count ?? 0;
-    this.render();
+    // 인스턴스가 사용할 데이터(외부에서 사용자가 전달한 데이터와 내부의 기본 데이터가 병합)
+    this.#props = { ...CountUpButton.defaultProps, ...props };
   }
 
-  // 렌더
+  // 렌더 (HTMLElement Node)
+  // return data type : HTMLButtonElement
   render() {
     console.log('렌더 시점')
     const button = document.createElement('button');
     button.setAttribute('type', 'button');
     button.textContent = String(this.#count);
+    this.#button = button;
+
+    this.bindEvents();
+
     return button;
+  }
+
+  // 렌더 (HTML String)
+  // return data type : string
+  renderHTML() {
+    return `
+      <button type="button">${String(this.#count)}</button>
+    `;
+  }
+
+  bindEvents() {
+    this.#button.addEventListener('click', (e) => {
+      console.log(e.target);
+    })
   }
 
   // 마운트(mount) 시점
   mount(container) {
+    // console.log(this.#props);
+    // console.log(typeof this.render());
     container?.append?.(this.render());
+    // console.log(typeof this.renderHTML())
+    // container?.insertAdjacentHTML('beforeend', this.renderHTML());
   }
 
   // 성장(update) 시점
@@ -247,8 +281,8 @@ class CountUpButton {
 
 // 새로운(new) 붕어빵(객체: 인스턴스) 생성
 const firstCountUp = new CountUpButton({ count: 1 });
-const secondCountUp = new CountUpButton({ count: 2 });
-const thirdCountUp = new CountUpButton({ count: 3 });
+const secondCountUp = new CountUpButton({ count: 2, step: 6 });
+const thirdCountUp = new CountUpButton({ count: 3, max: 100 });
 
 globalThis.firstCountUp = firstCountUp;
 
@@ -259,7 +293,6 @@ const demoContainer = document.getElementById('demo');
 firstCountUp.mount(demoContainer);
 secondCountUp.mount(demoContainer);
 thirdCountUp.mount(demoContainer);
-
 
 // --------------------------------------------------------------------------
 // 웹 컴포넌트(Web Components) API
